@@ -12,6 +12,7 @@ public class MeetingsFrame extends JFrame {
         // Components
         ChooseDatePanel chooseDatePanel = new ChooseDatePanel();
         CalendarPanel calendarPanel = new CalendarPanel(chooseDatePanel);
+        chooseDatePanel.addObserver(calendarPanel);
 
         // Add components to content pane
         Container container = getContentPane();

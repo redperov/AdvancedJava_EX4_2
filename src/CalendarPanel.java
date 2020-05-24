@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Calendar;
+import java.util.*;
 
-public class CalendarPanel extends JPanel {
+public class CalendarPanel extends JPanel implements Observer {
 
     // Day of week name labels
     private static final String[] DAYS_OF_WEEK = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -20,11 +20,19 @@ public class CalendarPanel extends JPanel {
     private LayoutManager mainLayout;
     private JPanel daysOfWeekPanel;
     private JPanel gridPanel;
+
     private Calendar calendar;
+    private Map<Date, String> datesMap;
+    private CalendarItemPanel[] calendarItemPanels;
+    private int currentMonth;
+    private int currentYear;
 
     public CalendarPanel(ChooseDatePanel chooseDatePanel) {
         this.chooseDatePanel = chooseDatePanel;
+
         this.calendar = Calendar.getInstance();
+        this.datesMap = new HashMap<>();
+        this.calendarItemPanels = new CalendarItemPanel[NUM_OF_ROWS * NUM_OF_COLUMNS];
 
         this.mainLayout = new BorderLayout();
         setLayout(this.mainLayout);
@@ -33,6 +41,7 @@ public class CalendarPanel extends JPanel {
         initializeGrid();
         this.add(this.daysOfWeekPanel, BorderLayout.NORTH);
         this.add(this.gridPanel, BorderLayout.CENTER);
+        displayCalendarData();
     }
 
     private void initializeDaysOfWeek() {
@@ -61,11 +70,30 @@ public class CalendarPanel extends JPanel {
         for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLUMNS; i++) {
             calendarItem = new CalendarItemPanel();
             calendarItem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            this.calendarItemPanels[i]= calendarItem;
             this.gridPanel.add(calendarItem);
         }
     }
 
     private void displayCalendarData() {
+        this.currentMonth = this.chooseDatePanel.getCurrentMonth();
+        this.currentYear = this.chooseDatePanel.getCurrentYear();
 
+        this.calendar.set(this.currentYear, this.currentMonth, 1);
+        int firstDayOfMonth = this.calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        int numOfDaysInMonth = this.calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLUMNS; i++) {
+            this.calendarItemPanels[i].clear();
+        }
+
+        for (int i = firstDayOfMonth; i < firstDayOfMonth + numOfDaysInMonth; i++) {
+           this.calendarItemPanels[i].setDayNumber(String.valueOf(i - firstDayOfMonth + 1));
+        }
+    }
+
+    @Override
+    public void update() {
+        displayCalendarData();
     }
 }

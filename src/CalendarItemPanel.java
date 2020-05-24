@@ -15,19 +15,24 @@ public class CalendarItemPanel extends JPanel {
         add(meeting);
     }
 
-    public JLabel getDayNumber() {
-        return dayNumber;
+    public String getDayNumber() {
+        return dayNumber.getText();
     }
 
-    public void setDayNumber(JLabel dayNumber) {
-        this.dayNumber = dayNumber;
+    public void setDayNumber(String dayNumber) {
+        this.dayNumber.setText(dayNumber);
     }
 
-    public JLabel getMeeting() {
-        return meeting;
+    public String getMeeting() {
+        return meeting.getText();
     }
 
-    public void setMeeting(JLabel meeting) {
-        this.meeting = meeting;
+    public void setMeeting(String meeting) {
+        this.meeting.setText(meeting);
+    }
+
+    public void clear() {
+        this.dayNumber.setText("");
+        this.meeting.setText("");
     }
 }

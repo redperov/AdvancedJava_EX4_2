@@ -1,13 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
-public class ChooseDatePanel extends JPanel {
+public class ChooseDatePanel extends JPanel implements Subject {
 
     private static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
     private static final int DISPLAYED_YEARS_RANGE = 80;
+    private List<Observer> displayObservers;
 
     private JComboBox<String> monthsComboBox;
     private JComboBox<String> yearsComboBox;
@@ -15,6 +20,7 @@ public class ChooseDatePanel extends JPanel {
     public ChooseDatePanel() {
         setLayout(new FlowLayout());
         initializeFields();
+        this.displayObservers = new ArrayList<>();
     }
 
     private void initializeFields() {
@@ -31,8 +37,10 @@ public class ChooseDatePanel extends JPanel {
 
         monthsComboBox.setSelectedIndex(0);
         yearsComboBox.setSelectedIndex(0);
-        // TODO implement listener
-        //displayButton.addActionListener(());
+
+        displayButton.addActionListener(e -> {
+            updateAll();
+        });
 
         this.add(new JLabel("Choose Month:"));
         this.add(monthsComboBox);
@@ -47,5 +55,17 @@ public class ChooseDatePanel extends JPanel {
 
     public int getCurrentYear() {
         return this.yearsComboBox.getSelectedIndex() + CURRENT_YEAR;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        this.displayObservers.add(observer);
+    }
+
+    @Override
+    public void updateAll() {
+        for (Observer observer : this.displayObservers) {
+            observer.update();
+        }
     }
 }
