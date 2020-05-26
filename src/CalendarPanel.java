@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class CalendarPanel extends JPanel implements Observer {
@@ -17,6 +19,7 @@ public class CalendarPanel extends JPanel implements Observer {
     private static final int NUM_OF_COLUMNS = 7;
 
     private ChooseDatePanel chooseDatePanel;
+    private MeetingsEditor meetingsEditor;
     private LayoutManager mainLayout;
     private JPanel daysOfWeekPanel;
     private JPanel gridPanel;
@@ -27,8 +30,9 @@ public class CalendarPanel extends JPanel implements Observer {
     private int currentMonth;
     private int currentYear;
 
-    public CalendarPanel(ChooseDatePanel chooseDatePanel) {
+    public CalendarPanel(ChooseDatePanel chooseDatePanel, MeetingsEditor meetingsEditor) {
         this.chooseDatePanel = chooseDatePanel;
+        this.meetingsEditor = meetingsEditor;
 
         this.calendar = Calendar.getInstance();
         this.datesMap = new HashMap<>();
@@ -44,6 +48,29 @@ public class CalendarPanel extends JPanel implements Observer {
         displayCalendarData();
     }
 
+    @Override
+    public void update(Object updateInfo) {
+        if (updateInfo instanceof String[]) {
+            String[] meetingInfo = (String[]) updateInfo;
+            this.calendar.set(this.currentYear, this.currentMonth, Integer.valueOf(meetingInfo[0]), 0, 0);
+            this.saveMeeting(this.calendar.getTime(), meetingInfo[1]);
+        }
+        else {
+        displayCalendarData();
+        this.meetingsEditor.clear();
+        }
+    }
+
+    public void saveMeeting(Date date, String meeting) {
+        this.datesMap.put(date, meeting);
+
+        for (CalendarItemPanel calendarItemPanel : this.calendarItemPanels) {
+            if (date.equals(calendarItemPanel.getDate())) {
+                calendarItemPanel.setMeeting(meeting);
+            }
+        }
+    }
+
     private void initializeDaysOfWeek() {
         this.daysOfWeekPanel = new JPanel();
         this.daysOfWeekPanel.setLayout(new FlowLayout());
@@ -54,7 +81,7 @@ public class CalendarPanel extends JPanel implements Observer {
         for (int dayIndex = 0; dayIndex < DAYS_OF_WEEK.length; dayIndex++) {
             dayNameLabel = new JLabel(DAYS_OF_WEEK[dayIndex]);
             dayNameLabel.setFont(font);
-            dayNameLabel.setBounds( DAYS_OF_WEEK_X_COORDINATE, DAYS_OF_WEEK_Y_COORDINATE,
+            dayNameLabel.setBounds(DAYS_OF_WEEK_X_COORDINATE, DAYS_OF_WEEK_Y_COORDINATE,
                     DAYS_OF_WEEK_LABEL_WIDTH, DAYS_OF_WEEK_LABEL_HEIGHT);
             this.daysOfWeekPanel.add(dayNameLabel);
         }
@@ -69,9 +96,9 @@ public class CalendarPanel extends JPanel implements Observer {
 
         for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLUMNS; i++) {
             calendarItem = new CalendarItemPanel();
-            calendarItem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            this.calendarItemPanels[i]= calendarItem;
+            this.calendarItemPanels[i] = calendarItem;
             this.gridPanel.add(calendarItem);
+            calendarItem.addObserver(this.meetingsEditor);
         }
     }
 
@@ -87,13 +114,17 @@ public class CalendarPanel extends JPanel implements Observer {
             this.calendarItemPanels[i].clear();
         }
 
-        for (int i = firstDayOfMonth; i < firstDayOfMonth + numOfDaysInMonth; i++) {
-           this.calendarItemPanels[i].setDayNumber(String.valueOf(i - firstDayOfMonth + 1));
-        }
-    }
+        Date currentDate;
+        CalendarItemPanel currentCalendarItemPanel;
 
-    @Override
-    public void update() {
-        displayCalendarData();
+        for (int i = firstDayOfMonth; i < firstDayOfMonth + numOfDaysInMonth; i++) {
+            currentCalendarItemPanel = this.calendarItemPanels[i];
+            this.calendar.set(this.currentYear, this.currentMonth, i - firstDayOfMonth + 1, 0, 0);
+            currentCalendarItemPanel.setDate(this.calendar.getTime());
+            currentCalendarItemPanel.setDayNumber(String.valueOf(i - firstDayOfMonth + 1));
+            currentDate = this.calendar.getTime();
+            currentCalendarItemPanel.setMeeting(this.datesMap.get(currentDate));
+            currentCalendarItemPanel.setActiveItem(true);
+        }
     }
 }

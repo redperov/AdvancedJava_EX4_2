@@ -65,7 +65,7 @@ public class ChooseDatePanel extends JPanel implements Subject {
     @Override
     public void updateAll() {
         for (Observer observer : this.displayObservers) {
-            observer.update();
+            observer.update(null);
         }
     }
 }
