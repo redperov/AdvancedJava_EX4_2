@@ -19,7 +19,7 @@ public class MeetingsEditor extends JPanel implements Observer, Subject {
 
     private void initializeFields() {
         this.saveButtonObservers = new ArrayList<>();
-        this.editMeetingArea = new JTextArea(15, 50);
+        this.editMeetingArea = new JTextArea(12, 50);
         this.editMeetingArea.setEditable(false);
 
         this.saveButton = new JButton("save");
@@ -48,8 +48,9 @@ public class MeetingsEditor extends JPanel implements Observer, Subject {
         }
 
         this.dayToPass = calendarItemPanel.getDayNumber();
-        this.editMeetingArea.setText(calendarItemPanel.getMeeting());
         this.editMeetingArea.setEditable(true);
+        this.editMeetingArea.setCaretPosition(0);
+        this.editMeetingArea.setText(calendarItemPanel.getMeeting());
         this.saveButton.setEnabled(true);
     }
 

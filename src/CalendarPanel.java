@@ -7,7 +7,7 @@ import java.util.*;
 public class CalendarPanel extends JPanel implements Observer {
 
     // Day of week name labels
-    private static final String[] DAYS_OF_WEEK = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    //private static final String[] DAYS_OF_WEEK = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static final int DAYS_OF_WEEK_X_COORDINATE = 30;
     private static final int DAYS_OF_WEEK_Y_COORDINATE = 30;
     private static final int DAYS_OF_WEEK_LABEL_WIDTH = 100;
@@ -21,7 +21,8 @@ public class CalendarPanel extends JPanel implements Observer {
     private ChooseDatePanel chooseDatePanel;
     private MeetingsEditor meetingsEditor;
     private LayoutManager mainLayout;
-    private JPanel daysOfWeekPanel;
+    //private JPanel daysOfWeekPanel;
+    //private JLabel displayedDateLabel;
     private JPanel gridPanel;
 
     private Calendar calendar;
@@ -40,10 +41,10 @@ public class CalendarPanel extends JPanel implements Observer {
 
         this.mainLayout = new BorderLayout();
         setLayout(this.mainLayout);
-        this.setSize(new Dimension(500, 500));
-        initializeDaysOfWeek();
+        //this.setSize(new Dimension(500, 500));
+        //initializeDaysOfWeek();
         initializeGrid();
-        this.add(this.daysOfWeekPanel, BorderLayout.NORTH);
+        //this.add(this.daysOfWeekPanel, BorderLayout.NORTH);
         this.add(this.gridPanel, BorderLayout.CENTER);
         displayCalendarData();
     }
@@ -71,26 +72,26 @@ public class CalendarPanel extends JPanel implements Observer {
         }
     }
 
-    private void initializeDaysOfWeek() {
-        this.daysOfWeekPanel = new JPanel();
-        this.daysOfWeekPanel.setLayout(new FlowLayout());
-
-        Font font = new Font("Serif", Font.PLAIN, DAYS_OF_WEEK_LABEL_FONT_SIZE);
-        JLabel dayNameLabel;
-
-        for (int dayIndex = 0; dayIndex < DAYS_OF_WEEK.length; dayIndex++) {
-            dayNameLabel = new JLabel(DAYS_OF_WEEK[dayIndex]);
-            dayNameLabel.setFont(font);
-            dayNameLabel.setBounds(DAYS_OF_WEEK_X_COORDINATE, DAYS_OF_WEEK_Y_COORDINATE,
-                    DAYS_OF_WEEK_LABEL_WIDTH, DAYS_OF_WEEK_LABEL_HEIGHT);
-            this.daysOfWeekPanel.add(dayNameLabel);
-        }
-    }
+//    private void initializeDaysOfWeek() {
+//        this.daysOfWeekPanel = new JPanel();
+//        this.daysOfWeekPanel.setLayout(new FlowLayout());
+//
+//        Font font = new Font("Serif", Font.PLAIN, DAYS_OF_WEEK_LABEL_FONT_SIZE);
+//        JLabel dayNameLabel;
+//
+//        for (int dayIndex = 0; dayIndex < DAYS_OF_WEEK.length; dayIndex++) {
+//            dayNameLabel = new JLabel(DAYS_OF_WEEK[dayIndex]);
+//            dayNameLabel.setFont(font);
+//            dayNameLabel.setBounds(DAYS_OF_WEEK_X_COORDINATE, DAYS_OF_WEEK_Y_COORDINATE,
+//                    DAYS_OF_WEEK_LABEL_WIDTH, DAYS_OF_WEEK_LABEL_HEIGHT);
+//            this.daysOfWeekPanel.add(dayNameLabel);
+//        }
+//    }
 
     private void initializeGrid() {
         this.gridPanel = new JPanel();
         this.gridPanel.setLayout(new GridLayout(NUM_OF_ROWS, NUM_OF_COLUMNS));
-        this.gridPanel.setSize(new Dimension(100, 100));
+        //this.gridPanel.setSize(new Dimension(100, 100));
 
         CalendarItemPanel calendarItem;
 

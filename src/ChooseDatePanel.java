@@ -16,9 +16,10 @@ public class ChooseDatePanel extends JPanel implements Subject {
 
     private JComboBox<String> monthsComboBox;
     private JComboBox<String> yearsComboBox;
+    private JLabel displayedDateLabel;
 
     public ChooseDatePanel() {
-        setLayout(new FlowLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         initializeFields();
         this.displayObservers = new ArrayList<>();
     }
@@ -33,20 +34,32 @@ public class ChooseDatePanel extends JPanel implements Subject {
 
         monthsComboBox = new JComboBox<>(months);
         yearsComboBox = new JComboBox<>(years);
+        displayedDateLabel = new JLabel();
         JButton displayButton = new JButton("Display");
 
         monthsComboBox.setSelectedIndex(0);
         yearsComboBox.setSelectedIndex(0);
+        displayedDateLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        displayedDateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        displayedDateLabel.setText(String.format("Meetings for %s %s",
+                monthsComboBox.getSelectedItem().toString(), yearsComboBox.getSelectedItem().toString()));
 
         displayButton.addActionListener(e -> {
+            displayedDateLabel.setText(String.format("Meetings for %s %s",
+                    monthsComboBox.getSelectedItem().toString(), yearsComboBox.getSelectedItem().toString()));
             updateAll();
         });
 
-        this.add(new JLabel("Choose Month:"));
-        this.add(monthsComboBox);
-        this.add(new JLabel("Choose Year:"));
-        this.add(yearsComboBox);
-        this.add(displayButton);
+        this.add(displayedDateLabel);
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 30));
+        optionsPanel.add(new JLabel("Choose Month:"));
+        optionsPanel.add(monthsComboBox);
+        optionsPanel.add(new JLabel("Choose Year:"));
+        optionsPanel.add(yearsComboBox);
+        optionsPanel.add(displayButton);
+        this.add(optionsPanel);
     }
 
     public int getCurrentMonth() {

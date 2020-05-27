@@ -6,8 +6,6 @@ public class MeetingsFrame extends JFrame {
     public MeetingsFrame(String title) {
         super(title);
 
-        // TODO set a title with the year and month
-
         // Set layout
         setLayout(new BorderLayout());
 
