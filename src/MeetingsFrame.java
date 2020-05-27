@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main frame of the meetings app.
+ */
 public class MeetingsFrame extends JFrame {
 
     public MeetingsFrame(String title) {
@@ -22,6 +25,4 @@ public class MeetingsFrame extends JFrame {
         container.add(calendarPanel, BorderLayout.CENTER);
         container.add(meetingsEditor, BorderLayout.SOUTH);
     }
-
-
 }

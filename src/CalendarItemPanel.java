@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents a single calendar item.
+ */
 public class CalendarItemPanel extends JPanel implements Subject {
 
     private static final int NUM_OF_LABELS = 3;
@@ -15,6 +18,9 @@ public class CalendarItemPanel extends JPanel implements Subject {
     private Date date;
     private List<Observer> panelClickedObservers;
 
+    /**
+     * Constructor.
+     */
     public CalendarItemPanel() {
         this.dayNumber = new JLabel();
         this.meeting = new JLabel[NUM_OF_LABELS];
@@ -31,6 +37,7 @@ public class CalendarItemPanel extends JPanel implements Subject {
             add(this.meeting[i]);
         }
 
+        // Add a listener to the calendar item
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -76,6 +83,7 @@ public class CalendarItemPanel extends JPanel implements Subject {
             label.setText("");
         }
 
+        // Save the meetings in a format that displays the content only in the available space
         String[] splitMeeting = newMeeting.split("\n");
         int counter;
 
@@ -101,14 +109,17 @@ public class CalendarItemPanel extends JPanel implements Subject {
     public void setActiveItem(boolean activeItem) {
         isActiveItem = activeItem;
 
+        // Change the background color according to the calendar item's isActive value
         if (isActiveItem) {
             this.setBackground(Color.WHITE);
-        }
-        else {
+        } else {
             this.setBackground(Color.GRAY);
         }
     }
 
+    /**
+     * Resets the content of the calendar item.
+     */
     public void clear() {
         this.dayNumber.setText("");
 
@@ -126,7 +137,7 @@ public class CalendarItemPanel extends JPanel implements Subject {
 
     @Override
     public void updateAll() {
-        for(Observer observer : this.panelClickedObservers) {
+        for (Observer observer : this.panelClickedObservers) {
             observer.update(this);
         }
     }

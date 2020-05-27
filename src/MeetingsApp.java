@@ -1,13 +1,14 @@
 import javax.swing.*;
 
+/**
+ * A meetings app for scheduling meetings in a calendar.
+ */
 public class MeetingsApp {
 
-    private MeetingsFrame meetingsFrame;
-
     public MeetingsApp() {
-        this.meetingsFrame = new MeetingsFrame("Meetings App");
-        this.meetingsFrame.setSize(1100,800);
-        this.meetingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.meetingsFrame.setVisible(true);
+        MeetingsFrame meetingsFrame = new MeetingsFrame("Meetings App");
+        meetingsFrame.setSize(1100,800);
+        meetingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        meetingsFrame.setVisible(true);
     }
 }

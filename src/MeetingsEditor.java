@@ -3,20 +3,27 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Allows the user to edit the meetings.
+ */
 public class MeetingsEditor extends JPanel implements Observer, Subject {
 
     private JTextArea editMeetingArea;
     private JButton saveButton;
     private String dayToPass;
-
     private List<Observer> saveButtonObservers;
 
+    /**
+     * Constructor.
+     */
     public MeetingsEditor() {
         setLayout(new FlowLayout());
-
         initializeFields();
     }
 
+    /**
+     * Initializes the layout components.
+     */
     private void initializeFields() {
         this.saveButtonObservers = new ArrayList<>();
         this.editMeetingArea = new JTextArea(12, 50);
@@ -41,6 +48,7 @@ public class MeetingsEditor extends JPanel implements Observer, Subject {
         CalendarItemPanel calendarItemPanel = (CalendarItemPanel) updateInfo;
         this.editMeetingArea.setText("");
 
+        // Check if the selected calendar item should be edited
         if (!calendarItemPanel.getActiveItem()) {
             this.editMeetingArea.setEditable(false);
             this.saveButton.setEnabled(false);
@@ -54,6 +62,9 @@ public class MeetingsEditor extends JPanel implements Observer, Subject {
         this.saveButton.setEnabled(true);
     }
 
+    /**
+     * Resets all the contents to the default values.
+     */
     public void clear() {
         this.editMeetingArea.setText("");
         this.editMeetingArea.setEditable(false);
